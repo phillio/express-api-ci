@@ -1,10 +1,20 @@
 language: node_js
 node_js:
-  - 'stable'
+- stable
 install: npm install
 services:
-  - postgresql
+- postgresql
 before_script:
-  - npm run db:create:test
+- npm run db:create:test
 script: npm test
 after_success: npm run coverage
+deploy:
+  provider: heroku
+  api_key:
+    secure: heJl3UckltvucCd8Gy22yrFB0okLFr3oDfVy/kP4WuGMDc9QslpseE3oshnjpZkoYRrPC80OImd+tisyA+QYXwgfnoKrzb26CMUTxsxuxu5wu2saC4n8DuqdtgOWRWzt9qkY5xx67t6440J1X8pviOyWojQ0oWHOxNiFRqb9CVo/FxioW2uJAmqmfXumgx7n4Q+OVEHevWYz8nW3Jw2rWPqIrgCimOZzq/iDM5WbgsRiifZqxEA/GCjY4K2ViXGSN9A4NKYviPX1S4Nvf3ghIBDliYDinTuCsys7uVAtUF6sD1jkv1o52yW8E1BNeTZw4Bd0yOI4Bqi+DCGC1Xx2H2RtPKkxLqwrYxhxqwJ8VfLoJa0SLsRFhXeO+wIy48wdbu+EBwAbqJi3OOWZ47LdOw4hVVGsBb6BMOOUVFaAS47wnSWnAm9WxAkjsvak19s/cqqGSUnXxSZGAPRcEDKsAv7aMd6j77iQUI6uphswRl8+IpHFXMZy+Ufh7w/0KvL18umyDM5TEbtERifQ5gOs4u5sp5SIOBp6ue6viRReBBUsSvVnfeZQodKUIimUQEwyXcJuaVtZXSITgc4JL9mwahWZQrMWLu5EwSg0SBDjdlB+bF9EPOr9dLr8fn1jxqoPj46TCTVazlrMwweW9htGKTqlgmN1b80XprabNNPRQtc=
+  app: cicadas-travis
+  on:
+    repo: phillio/express-api-ci
+  run:
+    - "npx sequelize-cli db:migrate"
+    - "npx sequelize-cli db:seed:all"
